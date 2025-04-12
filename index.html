@@ -127,12 +127,13 @@
       transform: scale(0.98);
     }
 
+    .hidden {
+      display: none;
+    }
+
     #timerOverlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
@@ -153,22 +154,6 @@
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
     }
 
-    #showSpyBtn {
-      margin-top: 25px;
-      padding: 12px 28px;
-      font-size: 1.5rem;
-      border-radius: 12px;
-      background-color: #009688;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    #showSpyBtn:hover {
-      background-color: #00796b;
-    }
-
     .revealInfo {
       font-size: 1.6rem;
       margin: 20px 0;
@@ -176,26 +161,19 @@
       text-shadow: 1px 1px 5px black;
     }
 
-    .hidden {
+    #flashOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+      pointer-events: none;
       display: none;
+      animation: sirenFlash 1s infinite alternate;
     }
 
     @keyframes sirenFlash {
       0% { background-color: rgba(255, 0, 0, 0.4); }
       50% { background-color: rgba(255, 255, 255, 0.4); }
       100% { background-color: rgba(255, 0, 0, 0.4); }
-    }
-
-    #flashOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 9999;
-      pointer-events: none;
-      display: none;
-      animation: sirenFlash 1s infinite alternate;
     }
 
     #investigationMessage {
@@ -225,30 +203,24 @@
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
       z-index: 10000;
     }
+
     #landingScreen {
-  position: absolute;
-  z-index: 10;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(12px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: fadeIn 1s ease-in-out;
-  transition: opacity 0.8s ease;
-}
+      position: absolute;
+      z-index: 10;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease-in-out;
+      transition: opacity 0.8s ease;
+    }
 
-#landingScreen.fadeOut {
-  opacity: 0;
-  pointer-events: none;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-
+    #landingScreen.fadeOut {
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -259,8 +231,8 @@
         <button onclick="goToStartScreen()">انضم إلى اللعبة</button>
       </div>
     </div>
-      
-    <div class="card" id="startScreen">
+
+    <div class="card hidden" id="startScreen">
       <h2>🇹🇳 الجاسوس - اللعبة</h2>
       <label for="playerCount">عدد اللاعبين:</label><br>
       <input type="number" id="playerCount" min="3" max="12" value="4"><br>
@@ -282,6 +254,12 @@
       <button onclick="nextPlayer()">التالي</button>
     </div>
 
+    <div class="card hidden" id="passDeviceScreen">
+      <h2>مرر الجهاز للاعب التالي</h2>
+      <p>عندما يكون اللاعب التالي جاهز، اضغط على "متابعة"</p>
+      <button onclick="continueToNextPlayer()">متابعة</button>
+    </div>
+
     <div class="card hidden" id="endScreen">
       <h2>نهاية الجولة</h2>
       <p id="revealInfo" class="revealInfo"></p>
@@ -298,10 +276,13 @@
   <div id="investigationMessage" class="hidden">إبدا التحقيق 🕵️‍♀️</div>
 
   <audio id="suspenseSound" preload="auto">
-    <source src="Background Suspense Music - Suspenseful & Dramatic Film Soundtracks ANTICIPATION.mp3" type="audio/wav">
+    <source src="Background Suspense Music.mp3" type="audio/mp3">
   </audio>
   <audio id="sirenSound" preload="auto">
-    <source src="Police Siren Sound Effect.mp3" type="audio/wav">
+    <source src="Police Siren Sound Effect.mp3" type="audio/mp3">
+  </audio>
+  <audio id="clickSound" preload="auto">
+    <source src="click.mp3" type="audio/mp3">
   </audio>
 
   <footer class="footer">
@@ -310,19 +291,17 @@
 
   <script>
     function goToStartScreen() {
-  const landing = document.getElementById("landingScreen");
-  landing.classList.add("fadeOut");
-  setTimeout(() => {
-    landing.style.display = "none";
-    document.getElementById("startScreen").classList.remove("hidden");
-  }, 800); // match transition time
-}
+      const landing = document.getElementById("landingScreen");
+      landing.classList.add("fadeOut");
+      setTimeout(() => {
+        landing.style.display = "none";
+        document.getElementById("startScreen").classList.remove("hidden");
+      }, 800);
+    }
 
-// Hide startScreen by default at load
-window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("startScreen").classList.add("hidden");
-});
-
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("startScreen").classList.add("hidden");
+    });
 
     const categories = {
       places: ["سوق المدينة", "المرسى", "قرطاج", "سيدي بوسعيد", "ستاد رادس", "شاطئ حمامات", "مقهى الخطاب على الباب", "السوق المركزي", "مسجد الزيتونة"],
@@ -334,8 +313,10 @@ window.addEventListener("DOMContentLoaded", () => {
     let players = [], spyIndex = 0, chosenLocation = "", currentPlayer = 0;
     let timer = 180;
     let timerInterval;
+
     const suspenseSound = document.getElementById("suspenseSound");
     const sirenSound = document.getElementById("sirenSound");
+    const clickSound = document.getElementById("clickSound");
     const flashOverlay = document.getElementById("flashOverlay");
 
     function startGame() {
@@ -348,6 +329,7 @@ window.addEventListener("DOMContentLoaded", () => {
       chosenLocation = categories[category][Math.floor(Math.random() * categories[category].length)];
 
       document.getElementById("startScreen").classList.add("hidden");
+      currentPlayer = 0;
       showPlayer();
     }
 
@@ -359,13 +341,22 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function nextPlayer() {
-      currentPlayer++;
-      if (currentPlayer < players.length) {
-        showPlayer();
+      document.getElementById("playerScreen").classList.add("hidden");
+      if (clickSound) clickSound.play();
+
+      if (currentPlayer < players.length - 1) {
+        const passScreen = document.getElementById("passDeviceScreen");
+        passScreen.classList.remove("hidden");
+        passScreen.querySelector("p").innerText = `عندما يكون اللاعب ${currentPlayer + 2} جاهز، اضغط على "متابعة"`;
       } else {
-        document.getElementById("playerScreen").classList.add("hidden");
         startTimer();
       }
+    }
+
+    function continueToNextPlayer() {
+      document.getElementById("passDeviceScreen").classList.add("hidden");
+      currentPlayer++;
+      showPlayer();
     }
 
     function startTimer() {
@@ -390,9 +381,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (timer <= 0) {
           clearInterval(timerInterval);
           suspenseSound.pause();
-          suspenseSound.currentTime = 0;
           sirenSound.pause();
-          sirenSound.currentTime = 0;
           flashOverlay.style.display = "none";
           document.getElementById("timerOverlay").classList.remove("show");
           document.getElementById("investigationMessage").classList.add("hidden");
@@ -406,13 +395,11 @@ window.addEventListener("DOMContentLoaded", () => {
     function revealSpy() {
       clearInterval(timerInterval);
       suspenseSound.pause();
-      suspenseSound.currentTime = 0;
       sirenSound.pause();
-      sirenSound.currentTime = 0;
       flashOverlay.style.display = "none";
+      document.getElementById("timerOverlay").classList.remove("show");
       document.getElementById("investigationMessage").classList.add("hidden");
 
-      document.getElementById("timerOverlay").classList.remove("show");
       document.getElementById("endScreen").classList.remove("hidden");
       document.getElementById("revealInfo").innerText = `الجاسوس كان: اللاعب ${spyIndex + 1} 🔍\nالمكان كان: ${chosenLocation}`;
     }
