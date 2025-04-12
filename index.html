@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الجاسوس - النسخة التونسية 🇹🇳</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: url('ChatGPT Image 12 avr. 2025, 14_19_56.png') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 10px;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 500px;
+      color: white;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    h2 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+
+    label, p {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    input[type="number"],
+    select {
+      padding: 15px;
+      font-size: 1.2rem;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      margin-top: 10px;
+      transition: border 0.3s ease-in-out;
+    }
+
+    input::placeholder,
+    select option {
+      color: #eee;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #ff9800;
+      outline: none;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      border: none;
+      background-color: #ff5722;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #e64a19;
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #timerOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      z-index: 999;
+    }
+
+    #timerOverlay.show {
+      visibility: visible;
+    }
+
+    #timer {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    #showSpyBtn {
+      margin-top: 25px;
+      padding: 12px 28px;
+      font-size: 1.5rem;
+      border-radius: 12px;
+      background-color: #009688;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #showSpyBtn:hover {
+      background-color: #00796b;
+    }
+
+    .revealInfo {
+      font-size: 1.6rem;
+      margin: 20px 0;
+      color: #ffc107;
+      text-shadow: 1px 1px 5px black;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes sirenFlash {
+      0% { background-color: rgba(255, 0, 0, 0.4); }
+      50% { background-color: rgba(255, 255, 255, 0.4); }
+      100% { background-color: rgba(255, 0, 0, 0.4); }
+    }
+
+    #flashOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 9999;
+      pointer-events: none;
+      display: none;
+      animation: sirenFlash 1s infinite alternate;
+    }
+
+    #investigationMessage {
+      position: fixed;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 2rem;
+      color: #ffeb3b;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+      z-index: 1001;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 1rem;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+    }
+    #landingScreen {
+  position: absolute;
+  z-index: 10;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 1s ease-in-out;
+  transition: opacity 0.8s ease;
+}
+
+#landingScreen.fadeOut {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="landingScreen" class="container">
+      <div class="card">
+        <h2>🇹🇳 الجاسوس - النسخة التونسية</h2>
+        <button onclick="goToStartScreen()">انضم إلى اللعبة</button>
+      </div>
+    </div>
+      
+    <div class="card" id="startScreen">
+      <h2>🇹🇳 الجاسوس - اللعبة</h2>
+      <label for="playerCount">عدد اللاعبين:</label><br>
+      <input type="number" id="playerCount" min="3" max="12" value="4"><br>
+
+      <label for="category">اختار الفئة:</label><br>
+      <select id="category">
+        <option value="places">أماكن</option>
+        <option value="foods">أطعمة</option>
+        <option value="events">فعاليات</option>
+        <option value="ramadanSeries">مسلسلات رمضان</option>
+      </select><br>
+
+      <button onclick="startGame()">ابدأ</button>
+    </div>
+
+    <div class="card hidden" id="playerScreen">
+      <h2 id="playerTitle">اللاعب X</h2>
+      <p id="playerRole"></p>
+      <button onclick="nextPlayer()">التالي</button>
+    </div>
+
+    <div class="card hidden" id="endScreen">
+      <h2>نهاية الجولة</h2>
+      <p id="revealInfo" class="revealInfo"></p>
+      <button onclick="window.location.reload()">إعادة اللعب</button>
+    </div>
+  </div>
+
+  <div id="timerOverlay" class="hidden">
+    <div id="timer">1:00</div>
+    <button id="showSpyBtn" onclick="revealSpy()">اظهار الجاسوس</button>
+  </div>
+
+  <div id="flashOverlay"></div>
+  <div id="investigationMessage" class="hidden">إبدا التحقيق 🕵️‍♀️</div>
+
+  <audio id="suspenseSound" preload="auto">
+    <source src="Background Suspense Music - Suspenseful & Dramatic Film Soundtracks ANTICIPATION.mp3" type="audio/wav">
+  </audio>
+  <audio id="sirenSound" preload="auto">
+    <source src="Police Siren Sound Effect.mp3" type="audio/wav">
+  </audio>
+
+  <footer class="footer">
+    <p>© 2025 - All rights reserved. Designed & developed by <strong>Bassem Ben Romdhane</strong> ❤️</p>
+  </footer>
+
+  <script>
+    function goToStartScreen() {
+  const landing = document.getElementById("landingScreen");
+  landing.classList.add("fadeOut");
+  setTimeout(() => {
+    landing.style.display = "none";
+    document.getElementById("startScreen").classList.remove("hidden");
+  }, 800); // match transition time
+}
+
+// Hide startScreen by default at load
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("startScreen").classList.add("hidden");
+});
+
+
+    const categories = {
+      places: ["سوق المدينة", "المرسى", "قرطاج", "سيدي بوسعيد", "استاد رادس", "شاطئ حمامات", "مقهى الديليسات", "السوق المركزي", "مسجد الزيتونة"],
+      foods: ["المكلوب", "الكسكسي", "لبلابي", "بريك", "البمبالوني"],
+      events: ["فطور رمضان", "حصاد الزيتون"],
+      ramadanSeries: ["خليلي شوفلي حال", "أولاد مفيدة", "نسيبتي العزيز", "الFoundou", "كن يا مكينش", "جبل الأحمر"]
+    };
+
+    let players = [], spyIndex = 0, chosenLocation = "", currentPlayer = 0;
+    let timer = 60;
+    let timerInterval;
+    const suspenseSound = document.getElementById("suspenseSound");
+    const sirenSound = document.getElementById("sirenSound");
+    const flashOverlay = document.getElementById("flashOverlay");
+
+    function startGame() {
+      const count = parseInt(document.getElementById("playerCount").value);
+      if (count < 3) return alert("الحد الأدنى 3 لاعبين!");
+
+      players = new Array(count).fill(null);
+      spyIndex = Math.floor(Math.random() * count);
+      const category = document.getElementById("category").value;
+      chosenLocation = categories[category][Math.floor(Math.random() * categories[category].length)];
+
+      document.getElementById("startScreen").classList.add("hidden");
+      showPlayer();
+    }
+
+    function showPlayer() {
+      document.getElementById("playerScreen").classList.remove("hidden");
+      document.getElementById("playerTitle").innerText = `اللاعب ${currentPlayer + 1}`;
+      document.getElementById("playerRole").innerText =
+        currentPlayer === spyIndex ? "أنت الجاسوس 🕵️‍♂️ !" : `المكان: ${chosenLocation}`;
+    }
+
+    function nextPlayer() {
+      currentPlayer++;
+      if (currentPlayer < players.length) {
+        showPlayer();
+      } else {
+        document.getElementById("playerScreen").classList.add("hidden");
+        startTimer();
+      }
+    }
+
+    function startTimer() {
+      document.getElementById("timerOverlay").classList.add("show");
+      document.getElementById("investigationMessage").classList.remove("hidden");
+
+      suspenseSound.loop = true;
+      suspenseSound.play().catch(e => console.log("Autoplay error:", e));
+      timer = 60;
+
+      timerInterval = setInterval(() => {
+        let minutes = Math.floor(timer / 60);
+        let seconds = timer % 60;
+        document.getElementById("timer").innerText = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+
+        if (timer <= 12 && timer > 0) {
+          flashOverlay.style.display = "block";
+          sirenSound.loop = true;
+          sirenSound.play();
+        }
+
+        if (timer <= 0) {
+          clearInterval(timerInterval);
+          suspenseSound.pause();
+          suspenseSound.currentTime = 0;
+          sirenSound.pause();
+          sirenSound.currentTime = 0;
+          flashOverlay.style.display = "none";
+          document.getElementById("timerOverlay").classList.remove("show");
+          document.getElementById("investigationMessage").classList.add("hidden");
+          revealSpy();
+        }
+
+        timer--;
+      }, 1000);
+    }
+
+    function revealSpy() {
+      clearInterval(timerInterval);
+      suspenseSound.pause();
+      suspenseSound.currentTime = 0;
+      sirenSound.pause();
+      sirenSound.currentTime = 0;
+      flashOverlay.style.display = "none";
+      document.getElementById("investigationMessage").classList.add("hidden");
+
+      document.getElementById("timerOverlay").classList.remove("show");
+      document.getElementById("endScreen").classList.remove("hidden");
+      document.getElementById("revealInfo").innerText = `الجاسوس كان: اللاعب ${spyIndex + 1} 🔍\nالمكان كان: ${chosenLocation}`;
+    }
+  </script>
+</body>
+</html>
