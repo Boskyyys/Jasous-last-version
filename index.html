@@ -96,7 +96,7 @@
 
     input::placeholder,
     select option {
-      color: #eee;
+      color: black;
     }
 
     input:focus,
@@ -290,7 +290,7 @@
   </div>
 
   <div id="timerOverlay" class="hidden">
-    <div id="timer">1:00</div>
+    <div id="timer">3:00</div>
     <button id="showSpyBtn" onclick="revealSpy()">اظهار الجاسوس</button>
   </div>
 
@@ -332,7 +332,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     let players = [], spyIndex = 0, chosenLocation = "", currentPlayer = 0;
-    let timer = 60;
+    let timer = 180;
     let timerInterval;
     const suspenseSound = document.getElementById("suspenseSound");
     const sirenSound = document.getElementById("sirenSound");
@@ -374,7 +374,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
       suspenseSound.loop = true;
       suspenseSound.play().catch(e => console.log("Autoplay error:", e));
-      timer = 60;
+      timer = 180;
 
       timerInterval = setInterval(() => {
         let minutes = Math.floor(timer / 60);
