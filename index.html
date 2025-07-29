@@ -333,7 +333,7 @@
       document.getElementById("playerScreen").classList.remove("hidden");
       document.getElementById("playerTitle").innerText = `اللاعب ${currentPlayer + 1}`;
       document.getElementById("playerRole").innerText =
-        currentPlayer === spyIndex ? "أنت الجاسوس 🕵️‍♂️ !" : `<b> ${chosenLocation}</b>`;
+        currentPlayer === spyIndex ? "أنت الجاسوس 🕵️‍♂️ !" : ` ${chosenLocation}`;
     }
 
     function nextPlayer() {
