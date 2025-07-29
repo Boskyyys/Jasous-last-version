@@ -333,7 +333,7 @@
       document.getElementById("playerScreen").classList.remove("hidden");
       document.getElementById("playerTitle").innerText = `اللاعب ${currentPlayer + 1}`;
       document.getElementById("playerRole").innerText =
-        currentPlayer === spyIndex ? "أنت الجاسوس 🕵️‍♂️ !" : `المكان: ${chosenLocation}`;
+        currentPlayer === spyIndex ? "أنت الجاسوس 🕵️‍♂️ !" : `: ${chosenLocation}`;
     }
 
     function nextPlayer() {
@@ -397,7 +397,7 @@
       document.getElementById("investigationMessage").classList.add("hidden");
 
       document.getElementById("endScreen").classList.remove("hidden");
-      document.getElementById("revealInfo").innerText = `الجاسوس كان: اللاعب ${spyIndex + 1} 🔍\nالمكان كان: ${chosenLocation}`;
+      document.getElementById("revealInfo").innerText = `الجاسوس كان: اللاعب ${spyIndex + 1} 🔍\n: ${chosenLocation}`;
     }
   </script>
 </body>
